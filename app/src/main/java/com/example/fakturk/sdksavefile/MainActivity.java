@@ -64,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
     {
 
         super.onCreate(savedInstanceState);
+        
         setContentView(R.layout.activity_main);
         startService(new Intent(this, SensorService.class));
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
