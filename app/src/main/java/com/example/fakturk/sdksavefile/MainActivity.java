@@ -8,12 +8,12 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
     int degree=0;
     float[] acc;
     long time;
+    String accMesaage;
 
 
 
@@ -108,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
 //        }
 
 //        sensorValue();
-        acc = new float[]{0,0,0};
+
         time=0;
 
         LocalBroadcastManager.getInstance(this).registerReceiver(new BroadcastReceiver()
@@ -117,9 +118,19 @@ public class MainActivity extends AppCompatActivity {
             public void onReceive(Context context, Intent intent)
             {
                 acc = (intent.getFloatArrayExtra("ACC_DATA"));
-                time = intent.getLongExtra("TIME",0);
-                System.out.println(acc[0]+" "+acc[1]+" "+acc[2]);
-                writeData(time,acc[0],acc[1],acc[2]);
+                if (acc!=null)
+                {
+//                    accMesaage = intent.getLongExtra("TIME",0)+" "+ acc[0]+" "+acc[1]+" "+acc[2]+"";
+//                    Log.d("accSDK  ", "    "+accMesaage);
+                    time = intent.getLongExtra("TIME",0);
+//                    System.out.println(acc[0]+" "+acc[1]+" "+acc[2]);
+//                    float t = (time-startTime)/1000000000.0f;
+//        System.out.println(time+" "+startTime+" "+t);
+                    writeData(time,acc[0],acc[1],acc[2]);
+
+
+                }
+
             }
         }, new IntentFilter(SensorService.ACTION_SENSOR_BROADCAST));
 
@@ -215,7 +226,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-                                    if(repeatNumber<10)
+                                    if(repeatNumber<100)
                                     {
                                         repeatNumber++;
                                         timeStarted=false;
@@ -295,7 +306,7 @@ public class MainActivity extends AppCompatActivity {
 
         String acc =  String.format("%.02f", t)+ " " + x + " " + y + " " + z+"\n";
 
-        System.out.println(acc);
+//        System.out.println(acc);
         if (startLogging)
         {
             if (timeStarted==false)
@@ -333,20 +344,29 @@ public class MainActivity extends AppCompatActivity {
 //
 //    public native void stopSensorPrint();
 
+
+
     @Override
     protected void onDestroy()
     {
 
         super.onDestroy();
-        stopService(getIntent());
-//        try
-//        {
-//            bos.close();
-//
-//        } catch (IOException e)
-//        {
-//            e.printStackTrace();
-//        }
+        stopService(new Intent(this,SensorService.class));
+    }
+    @Override
+    protected void onPause() {
+
+        super.onPause();
+        stopService(new Intent(this,SensorService.class));
+
+
+    }
+
+    @Override
+    protected void onResume() {
+
+        super.onResume();
+        startService(new Intent(this, SensorService.class));
     }
 
     /**

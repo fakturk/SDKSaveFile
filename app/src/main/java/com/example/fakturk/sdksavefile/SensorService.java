@@ -26,8 +26,8 @@ public class SensorService extends Service implements SensorEventListener
 
     SensorManager SM;
     float[] ACC_DATA=new float[3];
-//    float[] GYR_DATA=new float[3];
-//    float[] MAG_DATA=new float[3];
+    float[] GYR_DATA=new float[3];
+    float[] MAG_DATA=new float[3];
 
     public static final String ACTION_SENSOR_BROADCAST = SensorService.class.getName() + "SensorBroadcast";
     long mSensorTimeStamp;
@@ -57,7 +57,7 @@ public class SensorService extends Service implements SensorEventListener
     {
 
 
-        Toast.makeText(this, "Service Started", Toast.LENGTH_LONG).show();
+//        Toast.makeText(this, "Service Started", Toast.LENGTH_LONG).show();
         SM = (SensorManager)getSystemService(SENSOR_SERVICE);
 
         SM.registerListener(this, SM.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), 10);
@@ -86,7 +86,6 @@ public class SensorService extends Service implements SensorEventListener
     public void onCreate() {
         //super.onCreate();
         Toast.makeText(this, "Service Created", Toast.LENGTH_LONG).show();
-        System.out.println("Sevice Created");
 
     }
 
@@ -155,7 +154,7 @@ public class SensorService extends Service implements SensorEventListener
 //                    intent.putExtra("GYR_DATA", GYR_DATA);
 //
 //                    break;
-
+//
 //                case Sensor.TYPE_MAGNETIC_FIELD :
 //                    text_mag = "";
 //                    text_mag += "X = " + se.values[0] + "\n";

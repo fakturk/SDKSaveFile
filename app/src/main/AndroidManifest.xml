@@ -21,11 +21,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <service
+            android:name=".SensorService"
+            android:enabled="true"
+            android:exported="true">
+        </service>
     </application>
-    <service
-        android:name=".SensorService"
-        android:enabled="true"
-        android:exported="true">
-    </service>
+
 
 </manifest>
